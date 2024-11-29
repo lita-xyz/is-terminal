@@ -31,7 +31,8 @@
         windows,
         target_os = "wasi",
         target_os = "hermit",
-        target_os = "unknown"
+        target_os = "unknown",
+        target_arch = "valida",
     )),
     no_std
 )]
@@ -80,7 +81,7 @@ pub fn is_terminal<T: IsTerminal>(this: T) -> bool {
     this.is_terminal()
 }
 
-#[cfg(not(any(windows, target_os = "unknown")))]
+#[cfg(not(any(windows, target_os = "unknown", target_arch = "valida")))]
 impl<Stream: AsFd> IsTerminal for Stream {
     #[inline]
     fn is_terminal(&self) -> bool {
@@ -192,7 +193,7 @@ unsafe fn msys_tty_on(handle: HANDLE) -> bool {
     is_msys && is_pty
 }
 
-#[cfg(target_os = "unknown")]
+#[cfg(any(target_os = "unknown", target_arch = "valida"))]
 impl IsTerminal for std::io::Stdin {
     #[inline]
     fn is_terminal(&self) -> bool {
@@ -200,7 +201,7 @@ impl IsTerminal for std::io::Stdin {
     }
 }
 
-#[cfg(target_os = "unknown")]
+#[cfg(any(target_os = "unknown", target_arch = "valida"))]
 impl IsTerminal for std::io::Stdout {
     #[inline]
     fn is_terminal(&self) -> bool {
@@ -208,7 +209,7 @@ impl IsTerminal for std::io::Stdout {
     }
 }
 
-#[cfg(target_os = "unknown")]
+#[cfg(any(target_os = "unknown", target_arch = "valida"))]
 impl IsTerminal for std::io::Stderr {
     #[inline]
     fn is_terminal(&self) -> bool {
@@ -216,7 +217,7 @@ impl IsTerminal for std::io::Stderr {
     }
 }
 
-#[cfg(target_os = "unknown")]
+#[cfg(any(target_os = "unknown", target_arch = "valida"))]
 impl<'a> IsTerminal for std::io::StdinLock<'a> {
     #[inline]
     fn is_terminal(&self) -> bool {
@@ -224,7 +225,7 @@ impl<'a> IsTerminal for std::io::StdinLock<'a> {
     }
 }
 
-#[cfg(target_os = "unknown")]
+#[cfg(any(target_os = "unknown", target_arch = "valida"))]
 impl<'a> IsTerminal for std::io::StdoutLock<'a> {
     #[inline]
     fn is_terminal(&self) -> bool {
@@ -232,7 +233,7 @@ impl<'a> IsTerminal for std::io::StdoutLock<'a> {
     }
 }
 
-#[cfg(target_os = "unknown")]
+#[cfg(any(target_os = "unknown", target_arch = "valida"))]
 impl<'a> IsTerminal for std::io::StderrLock<'a> {
     #[inline]
     fn is_terminal(&self) -> bool {
@@ -240,7 +241,7 @@ impl<'a> IsTerminal for std::io::StderrLock<'a> {
     }
 }
 
-#[cfg(target_os = "unknown")]
+#[cfg(any(target_os = "unknown", target_arch = "valida"))]
 impl<'a> IsTerminal for std::fs::File {
     #[inline]
     fn is_terminal(&self) -> bool {
@@ -248,7 +249,7 @@ impl<'a> IsTerminal for std::fs::File {
     }
 }
 
-#[cfg(target_os = "unknown")]
+#[cfg(any(target_os = "unknown", target_arch = "valida"))]
 impl IsTerminal for std::process::ChildStdin {
     #[inline]
     fn is_terminal(&self) -> bool {
@@ -256,7 +257,7 @@ impl IsTerminal for std::process::ChildStdin {
     }
 }
 
-#[cfg(target_os = "unknown")]
+#[cfg(any(target_os = "unknown", target_arch = "valida"))]
 impl IsTerminal for std::process::ChildStdout {
     #[inline]
     fn is_terminal(&self) -> bool {
@@ -264,7 +265,7 @@ impl IsTerminal for std::process::ChildStdout {
     }
 }
 
-#[cfg(target_os = "unknown")]
+#[cfg(any(target_os = "unknown", target_arch = "valida"))]
 impl IsTerminal for std::process::ChildStderr {
     #[inline]
     fn is_terminal(&self) -> bool {
@@ -274,7 +275,7 @@ impl IsTerminal for std::process::ChildStderr {
 
 #[cfg(test)]
 mod tests {
-    #[cfg(not(target_os = "unknown"))]
+    #[cfg(not(any(target_os = "unknown", target_arch = "valida")))]
     use super::IsTerminal;
 
     #[test]
